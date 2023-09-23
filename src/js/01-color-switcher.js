@@ -13,8 +13,6 @@ function changeBackColor() {
   timerId = setInterval(() => {
     const randomColor = getRandomHexColor();
     refs.currentColor.style.backgroundColor = randomColor;
-
-    console.log('Second log');
   }, 1000);
 }
 function stopChangColor() {
