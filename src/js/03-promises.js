@@ -21,23 +21,26 @@ function onPromise(elm) {
   let firstDelay = Number(form.delay.value);
   let step = Number(form.step.value);
   let amount = Number(form.amount.value);
-  for (let i = 0; i < amount; i += 1) {
-    let promiseDelay = firstDelay + step * i;
+  if (step < 0 || amount <= 0) {
+    Notiflix.Notify.failure(`❌ Enter the value > 0`, { timeout: 3000 });
+  } else {
+    for (let i = 0; i < amount; i += 1) {
+      let promiseDelay = firstDelay + step * i;
+      createPromise(i, promiseDelay)
+        .then(({ position, delay }) => {
+          Notiflix.Notify.success(
+            `✅ Fulfilled promise ${position} in ${delay}ms`,
 
-    createPromise(i, promiseDelay)
-      .then(({ position, delay }) => {
-        Notiflix.Notify.success(
-          `✅ Fulfilled promise ${position} in ${delay}ms`,
-
-          {
-            timeout: 3000,
-          }
-        );
-      })
-      .catch(({ position, delay }) => {
-        Notiflix.Notify.failure(
-          `❌ Rejected promise ${position} in ${delay}ms`
-        );
-      });
+            {
+              timeout: 3000,
+            }
+          );
+        })
+        .catch(({ position, delay }) => {
+          Notiflix.Notify.failure(
+            `❌ Rejected promise ${position} in ${delay}ms`
+          );
+        });
+    }
   }
 }
